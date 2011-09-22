@@ -1,5 +1,7 @@
 package cheep.eval;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -9,9 +11,11 @@ import cheep.model.ProductSet;
 public class ProductSetValidator implements Validator<ProductSet>{
 	
 	private final Validator<Product> productVal;
-
-	public ProductSetValidator(Validator<Product> val) {
+	private final double invalidFeatureDiscount;
+	
+	public ProductSetValidator(Validator<Product> val,double invalidFeatureDiscount) {
 		this.productVal = val;
+		this.invalidFeatureDiscount = invalidFeatureDiscount;
 	}
 	
 	@Override
@@ -34,20 +38,26 @@ public class ProductSetValidator implements Validator<ProductSet>{
 			List<? extends ProductSet> population) {
 		Set<Product> products = candidate.getProducts();
 		int setSize = products.size();
+		List<boolean[]> allFeatureArrays = new ArrayList<boolean[]>(); 
 		double fitness = 0;
+		double totalNumberFeatures = candidate.getProductSize();
 
-		for (Product p : products) {
-			double nFeatures = p.getTotalNumberFeatures(); //TODO extract this
+		for (Product p : products) { 
+			allFeatureArrays.add(p.getFeatures());
 			double nDistFeatures = p.getDistinctFeatures();
 			boolean isValid = productVal.validate(p);
-			double partialFitness = nFeatures / nDistFeatures;
+			double partialFitness = nDistFeatures / totalNumberFeatures;
 			
 			if(isValid) {
 				fitness += partialFitness;
 			} else {
-				fitness -= partialFitness;
+				fitness += (partialFitness * (1-invalidFeatureDiscount));
 			}
 		}
+		
+		//less distinct features, less score.
+		double distinctFeatures = nDistinctFeatures(allFeatureArrays);
+		fitness = fitness * (distinctFeatures / totalNumberFeatures);		
 		
 		return fitness > 0 ? fitness / setSize : 0;
 	}
@@ -55,5 +65,27 @@ public class ProductSetValidator implements Validator<ProductSet>{
 	@Override
 	public boolean isNatural() {
 		return true;
+	}
+	
+	//PRECONDITION - matrix.size > 0 
+	private static int nDistinctFeatures(List<boolean[]> matrix) {
+		int lineSize = matrix.get(0).length;
+		boolean[] distinct = new boolean[lineSize];
+		Arrays.fill(distinct, true);
+		
+		for(boolean[] line : matrix) {
+			for(int i = 0; i < lineSize; i++) {
+				distinct[i] &= line[i]; 
+			}
+		}
+		
+		int total = 0;
+		for(boolean b : distinct) {
+			if(b) {
+				total++;
+			}
+		}
+		
+		return total;
 	}
 }

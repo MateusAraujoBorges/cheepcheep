@@ -72,7 +72,7 @@ public class ProductSetMutation implements EvolutionaryOperator<ProductSet>{
 			}
 			evolvedProducts[i] = productFactory.generateRandomCandidate(rng);
 			
-		} else { //remove a random element
+		} else if (psSize > 1){ //remove a random element if set size > 1 
 			evolvedProducts = new Product[psSize - 1];
 			int toBeRemoved = rng.nextInt(psSize);
 			
@@ -85,6 +85,13 @@ public class ProductSetMutation implements EvolutionaryOperator<ProductSet>{
 					removed = true;
 					i--;
 				}
+				i++;
+			}
+		} else { //size = 1
+			evolvedProducts = new Product[psSize];
+			int i = 0;
+			for (Product p : ps) {
+				evolvedProducts[i] = p;
 				i++;
 			}
 		}

@@ -19,6 +19,7 @@ import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 
+import cheep.eval.GPLProductValidator;
 import cheep.eval.ProductSetValidator;
 import cheep.eval.ProductValidator;
 import cheep.eval.Validator;
@@ -30,14 +31,14 @@ import cheep.model.ProductSetFactory;
 public class TestWatchmaker {
 
 	public static void main(String[] args) {
-		CandidateFactory<Product> pfac = new ProductFactory(5);
+		CandidateFactory<Product> pfac = new ProductFactory(15);
 		CandidateFactory<ProductSet> psfac = new ProductSetFactory(pfac, 10);
 		
 		List<EvolutionaryOperator<ProductSet>> a = new ArrayList<EvolutionaryOperator<ProductSet>>(3);
 		a.add(new ProductSetMutation(new Probability(0.15), new Probability(0.30), new Probability(0.20), pfac));
 		
-		Validator<Product> valP = new ProductValidator();
-		Validator<ProductSet> valPset = new ProductSetValidator(valP);
+		Validator<Product> valP = new GPLProductValidator();
+		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9);
 		
 		EvolutionaryOperator<ProductSet> pipeline = new EvolutionPipeline<ProductSet>(a);
 		EvolutionEngine<ProductSet> engine = new GenerationalEvolutionEngine<ProductSet>(psfac,

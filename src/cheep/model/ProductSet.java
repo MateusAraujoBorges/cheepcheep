@@ -14,13 +14,17 @@ import java.util.TreeSet;
 public class ProductSet {
 	
 	private final Set<Product> products;
+	private final int productSize;
 	
+	
+	//PRECONDITION productList.length > 0, all products have same size
 	public ProductSet(Product... productList) {
 		Set<Product> ps = new HashSet<Product>();
 		for (Product p : productList) {
 			ps.add(p);
 		}
 		this.products = ps;
+		this.productSize = productList[0].getTotalNumberFeatures();
 	}
 
 	public Set<Product> getProducts() {
@@ -34,5 +38,9 @@ public class ProductSet {
 			sb.append(" ");
 		}
 		return sb.toString();
+	}
+
+	public int getProductSize() {
+		return productSize;
 	}
 }
