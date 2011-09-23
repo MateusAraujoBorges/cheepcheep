@@ -41,8 +41,8 @@ public class GPLProductValidator extends ProductValidator {
 	
 	@Override
 	public boolean validate(Product t) {
+		System.out.println("validating T:" + t);
 		boolean[] features = t.getFeatures();
-		boolean tmp = false;
 		boolean isValid = true;
 		//0
 		isValid &= features[0];
@@ -56,29 +56,60 @@ public class GPLProductValidator extends ProductValidator {
 		isValid &= counter >= 1;
 		
 		//8-10
-		tmp = false;
+		boolean src = false;
 		boolean bfs = features[8];
 		boolean dfs = features[9];
 		boolean search = features[10];
 		
 		if(bfs || dfs || search) {//check if src feature is active
-			tmp = bfs ^ dfs;
-			isValid &= tmp;
+			src = true;
+			isValid &= bfs ^ dfs;
 		}
 		                          
 		//11
-		isValid &= features[11];
+		boolean weighted = features[11];
+		isValid &= weighted;
 
 		//12-13
-		tmp = false;
-		boolean direct = features[8];
-		boolean undirect = features[9];
+		boolean gtp = false;
+		boolean direct = features[12];
+		boolean undirect = features[13];
 				
-		tmp = direct ^ undirect;//check if gtp feature is active
-		isValid &= tmp;
+		gtp = direct ^ undirect;//check if gtp feature is active
+		isValid &= gtp;
 		
 		//14
 		isValid &= features[14];
+		
+		
+		if(features[1]) { //Number implies Gtp and Src ;
+			isValid &= gtp && src;
+		}
+		
+		if(features[2]) { //Connected implies Undirected and Src ;
+			isValid &= src && features[13];
+		}
+		
+		if(features[3] ) { //StrongC implies Directed and DFS ;
+			isValid &= dfs && direct;
+		}
+		
+		if(features[4]) { //Cycle implies Gtp and DFS ;
+			isValid &= gtp && dfs; 
+		}
+		
+		boolean mstkruskal = features[6];
+		boolean mstprim = features[5];
+
+		if(mstkruskal || mstprim) { //MSTKruskal or MSTPrim implies Undirected and Weighted ;
+			isValid &= undirect && dfs; 
+		}
+		
+		isValid &= mstkruskal ^ mstprim; // MSTKruskal or MSTPrim implies not (MSTKruskal and MSTPrim) ;
+
+		if(features[7]) { //Shortest implies Directed and Weighted ;
+			isValid &= direct && weighted; 
+		}
 		
 		return isValid;
 	}
@@ -88,7 +119,7 @@ public class GPLProductValidator extends ProductValidator {
 		//BENCHMARK,NUMBER,SHORTEST,BFS,SEARCH,WEIGHTED,DIRECTED,BASE
 		boolean[] b2 = new boolean[]{true,true,false,false,false,false,false,false,true,false,true,true,true,false,true};
 		boolean[] bn2 = new boolean[]{true,true,false,false,false,false,false,false,true,true,true,true,true,false,true};
-		boolean[] set1 = new boolean[] {true, false, true, true, true, true, true, true, true, false, true, true, true, true, true};
+		boolean[] set1= new boolean[]{true,true,true,true,true,true,true,true,true,false,true,true,true,true,true};
 		Product p = new Product(b2);
 		assertTrue(validate(p));
 		p = new Product(bn2);

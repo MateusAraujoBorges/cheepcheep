@@ -12,10 +12,12 @@ public class ProductSetValidator implements Validator<ProductSet>{
 	
 	private final Validator<Product> productVal;
 	private final double invalidFeatureDiscount;
+	private final double incompleteFeatureSetDiscount;
 	
-	public ProductSetValidator(Validator<Product> val,double invalidFeatureDiscount) {
+	public ProductSetValidator(Validator<Product> val,double invalidFeatureDiscount, double incompleteFeatureSetDiscount) {
 		this.productVal = val;
 		this.invalidFeatureDiscount = invalidFeatureDiscount;
+		this.incompleteFeatureSetDiscount = incompleteFeatureSetDiscount;
 	}
 	
 	@Override
@@ -28,6 +30,10 @@ public class ProductSetValidator implements Validator<ProductSet>{
 			if(!isValid) {
 				break;
 			}
+		}
+		
+		if(isValid) {
+			isValid = checkAllFeatures(ps);
 		}
 		
 		return isValid;
@@ -51,13 +57,15 @@ public class ProductSetValidator implements Validator<ProductSet>{
 			if(isValid) {
 				fitness += partialFitness;
 			} else {
-				fitness += (partialFitness * (1-invalidFeatureDiscount));
+				fitness += 0; //(partialFitness * (1-invalidFeatureDiscount));
 			}
 		}
 		
-		//less distinct features, less score.
-		double distinctFeatures = nDistinctFeatures(allFeatureArrays);
-		fitness = fitness * (distinctFeatures / totalNumberFeatures);		
+		//less distinct features -> smaller score.
+//		double distinctFeatures = nDistinctFeatures(allFeatureArrays);
+//		if(distinctFeatures < totalNumberFeatures) {
+//			fitness = fitness * (distinctFeatures / totalNumberFeatures) * (1- incompleteFeatureSetDiscount);		
+//		}
 		
 		return fitness > 0 ? fitness / setSize : 0;
 	}
@@ -65,6 +73,19 @@ public class ProductSetValidator implements Validator<ProductSet>{
 	@Override
 	public boolean isNatural() {
 		return true;
+	}
+	
+	private static boolean checkAllFeatures(ProductSet pset) {
+		List<boolean[]> allFeatureArrays = new ArrayList<boolean[]>(); 
+		int nFeatures = pset.getProductSize();
+		
+		for (Product p : pset.getProducts()) { 
+			allFeatureArrays.add(p.getFeatures());
+		}
+		
+		int distinctFeatures = nDistinctFeatures(allFeatureArrays);
+		
+		return nFeatures == distinctFeatures;
 	}
 	
 	//PRECONDITION - matrix.size > 0 
