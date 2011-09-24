@@ -27,6 +27,7 @@ import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 
+import cheep.eval.BerkleyProductValidator;
 import cheep.eval.GPLProductValidator;
 import cheep.eval.ProductSetValidator;
 import cheep.eval.ProductValidator;
@@ -41,20 +42,22 @@ import cheep.model.ValidProductSetFactory;
 public class TestWatchmaker {
 
 	public static void main(String[] args) {
-		Validator<Product> valP = new GPLProductValidator();
+//		Validator<Product> valP = new GPLProductValidator();
+		Validator<Product> valP = new BerkleyProductValidator();
 		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9, 0.99);
 
 //		CandidateFactory<Product> pfac = new ProductFactory(15);
 //		CandidateFactory<ProductSet> psfac = new ProductSetFactory(pfac, 10);
 		
-		CandidateFactory<Product> pfac = new ValidProductFactory(15,valP);
+//		CandidateFactory<Product> pfac = new ValidProductFactory(15,valP);
+		CandidateFactory<Product> pfac = new ValidProductFactory(42,valP);
 		CandidateFactory<ProductSet> psfac = new ValidProductSetFactory(pfac, 10,valPset);
 		
 //		List<EvolutionaryOperator<ProductSet>> a = new ArrayList<EvolutionaryOperator<ProductSet>>(3);
 //		a.add(new ProductSetMutation(new Probability(0.50), new Probability(0.25), new Probability(0.20), pfac));
 
 		List<EvolutionaryOperator<ProductSet>> a = new ArrayList<EvolutionaryOperator<ProductSet>>(3);
-		a.add(new ValidProductSetMutation(new Probability(0.50), new Probability(0.25), new Probability(0.20), pfac,valPset));
+		a.add(new ValidProductSetMutation(new Probability(1), new Probability(0.25), new Probability(0.20), pfac,valPset));
 
 		
 		EvolutionaryOperator<ProductSet> pipeline = new EvolutionPipeline<ProductSet>(a);
