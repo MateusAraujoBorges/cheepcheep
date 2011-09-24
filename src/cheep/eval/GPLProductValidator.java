@@ -103,9 +103,9 @@ public class GPLProductValidator extends ProductValidator {
 
 		if(mstkruskal || mstprim) { //MSTKruskal or MSTPrim implies Undirected and Weighted ;
 			isValid &= undirect && dfs; 
+			isValid &= mstkruskal ^ mstprim; // MSTKruskal or MSTPrim implies not (MSTKruskal and MSTPrim) ;
 		}
 		
-		isValid &= mstkruskal ^ mstprim; // MSTKruskal or MSTPrim implies not (MSTKruskal and MSTPrim) ;
 
 		if(features[7]) { //Shortest implies Directed and Weighted ;
 			isValid &= direct && weighted; 
@@ -126,6 +126,25 @@ public class GPLProductValidator extends ProductValidator {
 		assertFalse(validate(p));
 		p = new Product(set1);
 		assertFalse(validate(p));
+	}
+	
+	@Test
+	public void testValidator2() {
+//		BENCHMARK,NUMBER,TRANSPOSE,STRONGLYCONNECTED,CYCLE,SHORTEST,DFS,SEARCH,WEIGHTED,DIRECTED,BASE
+		boolean[] b1 = new boolean[]{true,true,false,true,true,false,false,true,false,true,true,true,true,false,true};
+		Product p = new Product(b1);
+		assertTrue(validate(p));
+//		BENCHMARK,NUMBER,SHORTEST,BFS,SEARCH,WEIGHTED,DIRECTED,BASE
+		boolean[] b2 = new boolean[]{true,true,false,false,false,false,false,true,true,false,true,true,true,false,true};
+		p = new Product(b2);
+		assertTrue(validate(p));
+//		BENCHMARK,NUMBER,CYCLE,MSTPRIM,DFS,SEARCH,CONNECTED,WEIGHTED,UNDIRECTED,BASE
+		boolean[] b3 = new boolean[]{true,true,true,false,true,true,false,false,false,true,false,true,false,true,true};
+		p = new Product(b3);
+		assertTrue(validate(p));
+//		BENCHMARK,NUMBER,MSTPRIM,BFS,SEARCH,CONNECTED,WEIGHTED,UNDIRECTED,BASE
+//		BENCHMARK,NUMBER,CYCLE,MSTKRUSKAL,DFS,SEARCH,CONNECTED,WEIGHTED,UNDIRECTED,BASE
+//		BENCHMARK,NUMBER,MSTKRUSKAL,BFS,SEARCH,CONNECTED,WEIGHTED,UNDIRECTED,BASE
 	}
 	
 }
