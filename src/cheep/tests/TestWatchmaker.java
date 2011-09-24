@@ -42,15 +42,15 @@ import cheep.model.ValidProductSetFactory;
 public class TestWatchmaker {
 
 	public static void main(String[] args) {
-//		Validator<Product> valP = new GPLProductValidator();
-		Validator<Product> valP = new BerkleyProductValidator();
+		Validator<Product> valP = new GPLProductValidator();
+//		Validator<Product> valP = new BerkleyProductValidator();
 		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9, 0.99);
 
 //		CandidateFactory<Product> pfac = new ProductFactory(15);
 //		CandidateFactory<ProductSet> psfac = new ProductSetFactory(pfac, 10);
 		
-//		CandidateFactory<Product> pfac = new ValidProductFactory(15,valP);
-		CandidateFactory<Product> pfac = new ValidProductFactory(42,valP);
+		CandidateFactory<Product> pfac = new ValidProductFactory(15,valP);
+//		CandidateFactory<Product> pfac = new ValidProductFactory(42,valP);
 		CandidateFactory<ProductSet> psfac = new ValidProductSetFactory(pfac, 10,valPset);
 		
 //		List<EvolutionaryOperator<ProductSet>> a = new ArrayList<EvolutionaryOperator<ProductSet>>(3);
@@ -78,11 +78,18 @@ public class TestWatchmaker {
 		System.out.println("Best product:");
 		EvaluatedCandidate<ProductSet> best = finalPopulation.get(0);
 		System.out.printf("Final Element: maxFitness:%f size:%d %s\n",best.getFitness(),best.getCandidate().getProducts().size(),best.getCandidate());
-		for(Product p : best.getCandidate().getProducts()) {
-//			System.out.println(GPLProductValidator.printProduct(p.getFeatures()));
-			System.out.println(BerkleyProductValidator.printProduct(p.getFeatures()));
-		}
 		
+		int i = 1;
+		for (EvaluatedCandidate<ProductSet> finalElement : finalPopulation) {
+			if(valPset.validate(finalElement.getCandidate())){
+				System.out.println("Final element no. " +i+ " is valid");
+				for(Product p : best.getCandidate().getProducts()) {
+					System.out.println(GPLProductValidator.printProduct(p.getFeatures()));
+//					System.out.println(BerkleyProductValidator.printProduct(p.getFeatures()));
+				}
+			}
+			i++;
+		}
 	}
 }
 

@@ -21,7 +21,7 @@ public class ProductSetValidator implements Validator<ProductSet>{
 	}
 	
 	@Override
-	public boolean validate(ProductSet ps) { //TODO check if product cover all features
+	public boolean validate(ProductSet ps) { 
 		boolean isValid = true;
 		
 		for(Product p : ps.getProducts()) {
@@ -52,11 +52,11 @@ public class ProductSetValidator implements Validator<ProductSet>{
 			allFeatureArrays.add(p.getFeatures());
 			double nDistFeatures = p.getDistinctFeatures();
 			boolean isValid = productVal.validate(p);
-//			double partialFitness = nDistFeatures / totalNumberFeatures;
+			double partialFitness = nDistFeatures / totalNumberFeatures;
 			
 			if(isValid) {
-//				fitness += partialFitness;
-				fitness += 1;
+				fitness += partialFitness;
+//				fitness += 1;
 			} else {
 				fitness += 0; //(partialFitness * (1-invalidFeatureDiscount));
 			}
@@ -65,7 +65,7 @@ public class ProductSetValidator implements Validator<ProductSet>{
 		//less distinct features -> smaller score.
 		double distinctFeatures = nDistinctFeatures(allFeatureArrays);
 		if(distinctFeatures < totalNumberFeatures) {
-			fitness = fitness * (distinctFeatures / totalNumberFeatures) * (1- incompleteFeatureSetDiscount);		
+			fitness = fitness * (1- incompleteFeatureSetDiscount);		
 		}
 		
 		if(fitness > 0) {
