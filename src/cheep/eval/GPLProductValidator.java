@@ -180,8 +180,53 @@ public class GPLProductValidator extends ProductValidator {
 		Validator<Product> valP = new GPLProductValidator();
 		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9, 0.99);
 		valPset.getFitness(pset, new ArrayList<ProductSet>());
+	}
+	
+	@Test 
+	public void testValidator4() {
+		boolean[] b1 = new boolean[]{true,true, true, false, false, false, false, false, true, false, true, true, false, true, true};;
+		Product p1 = new Product(b1);
+		assertTrue(validate(p1));
+
+		System.out.println(print01(b1));
+		
+		boolean[] b2 = new boolean[]{true,true, false, true, true, false, false, true, false, true, true, true, true, false, true};;
+		Product p2 = new Product(b2);
+		assertTrue(validate(p2));
+		
+		System.out.println(print01(b2));
+
+		boolean[] b3 = new boolean[]{true,true, false, false, true, false, true, false, false, true, false, true, false, true, true};;
+		Product p3 = new Product(b3);
+		assertTrue(validate(p3));
+		
+		System.out.println(print01(b3));
+
+		boolean[] b4 = new boolean[]{true,false, true, false, true, true, false, false, false, true, true, true, false, true, true};;
+		Product p4 = new Product(b4);
+		assertTrue(validate(p4));
+		
+		System.out.println(print01(b4));
 
 		
+		ProductSet pset = new ProductSet(new Product[]{p1,p2,p3,p4});
+		Validator<Product> valP = new GPLProductValidator();
+		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9, 0.99);
+		assertTrue(valPset.validate(pset));
+		valPset.getFitness(pset, new ArrayList<ProductSet>());
 	}
+	
+	public static String print01(boolean[] array) {
+		StringBuffer sb = new StringBuffer();
+		for (boolean b : array) {
+			if(b) {
+				sb.append(1);				
+			} else {
+				sb.append(0);
+			}
+		}
+		return sb.toString();
+	}
+	
 	
 }
