@@ -62,12 +62,18 @@ public class ProductSetValidator implements Validator<ProductSet>{
 		}
 		
 		//less distinct features -> smaller score.
-//		double distinctFeatures = nDistinctFeatures(allFeatureArrays);
-//		if(distinctFeatures < totalNumberFeatures) {
-//			fitness = fitness * (distinctFeatures / totalNumberFeatures) * (1- incompleteFeatureSetDiscount);		
-//		}
+		double distinctFeatures = nDistinctFeatures(allFeatureArrays);
+		if(distinctFeatures < totalNumberFeatures) {
+			fitness = fitness * (distinctFeatures / totalNumberFeatures) * (1- incompleteFeatureSetDiscount);		
+		}
 		
-		return fitness > 0 ? fitness / setSize : 0;
+		if(fitness > 0) {
+			fitness = fitness / setSize;
+		} else {
+			fitness = 0;
+		}
+		
+		return fitness;
 	}
 
 	@Override
@@ -92,11 +98,11 @@ public class ProductSetValidator implements Validator<ProductSet>{
 	private static int nDistinctFeatures(List<boolean[]> matrix) {
 		int lineSize = matrix.get(0).length;
 		boolean[] distinct = new boolean[lineSize];
-		Arrays.fill(distinct, true);
+		Arrays.fill(distinct, false);
 		
 		for(boolean[] line : matrix) {
 			for(int i = 0; i < lineSize; i++) {
-				distinct[i] &= line[i]; 
+				distinct[i] |= line[i]; 
 			}
 		}
 		

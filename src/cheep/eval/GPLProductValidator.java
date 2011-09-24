@@ -2,9 +2,12 @@ package cheep.eval;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import cheep.model.Product;
+import cheep.model.ProductSet;
 
 public class GPLProductValidator extends ProductValidator {
 /**
@@ -41,7 +44,7 @@ public class GPLProductValidator extends ProductValidator {
 	
 	@Override
 	public boolean validate(Product t) {
-		System.out.println("validating T:" + t);
+//		System.out.println("validating T:" + t);
 		boolean[] features = t.getFeatures();
 		boolean isValid = true;
 		//0
@@ -145,6 +148,40 @@ public class GPLProductValidator extends ProductValidator {
 //		BENCHMARK,NUMBER,MSTPRIM,BFS,SEARCH,CONNECTED,WEIGHTED,UNDIRECTED,BASE
 //		BENCHMARK,NUMBER,CYCLE,MSTKRUSKAL,DFS,SEARCH,CONNECTED,WEIGHTED,UNDIRECTED,BASE
 //		BENCHMARK,NUMBER,MSTKRUSKAL,BFS,SEARCH,CONNECTED,WEIGHTED,UNDIRECTED,BASE
+	}
+	
+	@Test 
+	public void testValidator3() {
+		boolean[] b1 = new boolean[]{true, true, false, false, false, false, true, false, false, true, true, true, false, true, true};;
+		Product p1 = new Product(b1);
+		assertTrue(validate(p1));
+
+		boolean[] b2 = new boolean[]{true, true, false, true, false, false, false, true, false, true, true, true, true, false, true};;
+		Product p2 = new Product(b2);
+		assertTrue(validate(p2));
+
+		boolean[] b3 = new boolean[]{true, true, true, false, false, false, false, false, true, false, true, true, false, true, true};;
+		Product p3 = new Product(b3);
+		assertTrue(validate(p3));
+
+		boolean[] b4 = new boolean[]{true, true, true, false, true, true, false, false, false, true, true, true, false, true, true};;
+		Product p4 = new Product(b4);
+		assertTrue(validate(p4));
+
+		boolean[] b5 = new boolean[]{true, true, false, true, true, false, false, true, false, true, true, true, true, false, true};;
+		Product p5 = new Product(b5);
+		assertTrue(validate(p5));
+
+		boolean[] b6 = new boolean[]{true, false, true, false, true, true, false, false, false, true, true, true, false, true, true};;
+		Product p6 = new Product(b6);
+		assertTrue(validate(p6));
+		
+		ProductSet pset = new ProductSet(new Product[]{p1,p2,p3,p4,p5,p6});
+		Validator<Product> valP = new GPLProductValidator();
+		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9, 0.99);
+		valPset.getFitness(pset, new ArrayList<ProductSet>());
+
+		
 	}
 	
 }

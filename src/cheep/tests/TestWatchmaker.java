@@ -63,13 +63,13 @@ public class TestWatchmaker {
 				psfac, pipeline, valPset, new TournamentSelection(
 						new Probability(0.75)), 1, true, rng);
 		engine.addEvolutionObserver(new EvolutionLogger());
-		List<EvaluatedCandidate<ProductSet>> finalPopulation = engine.evolvePopulation(10, // 100 individuals in the population.
-				1, // 5% elitism.
+		List<EvaluatedCandidate<ProductSet>> finalPopulation = engine.evolvePopulation(50, // 100 individuals in the population.
+				5, // 5% elitism.
 //				new GenerationCount(500), new Stagnation(20, true));
 				new GenerationCount(500));
 	
 		for (EvaluatedCandidate<ProductSet> ec : finalPopulation) {
-			System.out.printf("Final Element: maxFitness:%f %s\n",ec.getFitness(),ec.getCandidate());
+			System.out.printf("Final Element: maxFitness:%f size:%d %s\n",ec.getFitness(),ec.getCandidate().getProducts().size(),ec.getCandidate());
 			
 		}
 	}
@@ -79,9 +79,9 @@ class EvolutionLogger implements EvolutionObserver<ProductSet> {
 
 	@Override
 	public void populationUpdate(PopulationData<? extends ProductSet> data) {
-		System.out.printf("Generation %d: maxFitness:%f %s\n",
+		System.out.printf("Generation %d: maxFitness:%f size:%d  %s\n",
 				data.getGenerationNumber(), data.getBestCandidateFitness(),
-				data.getBestCandidate());
+				data.getBestCandidate().getProducts().size(),data.getBestCandidate());
 		System.out.println("Mean fitness: " + data.getMeanFitness()
 				+ " stdDeviation: " + data.getFitnessStandardDeviation());
 	}
