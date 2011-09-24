@@ -71,10 +71,18 @@ public class TestWatchmaker {
 //				new GenerationCount(500), new Stagnation(20, true));
 				new GenerationCount(500));
 	
-		for (EvaluatedCandidate<ProductSet> ec : finalPopulation) {
-			System.out.printf("Final Element: maxFitness:%f size:%d %s\n",ec.getFitness(),ec.getCandidate().getProducts().size(),ec.getCandidate());
-			
+//		for (EvaluatedCandidate<ProductSet> ec : finalPopulation) {
+//			System.out.printf("Final Element: maxFitness:%f size:%d %s\n",ec.getFitness(),ec.getCandidate().getProducts().size(),ec.getCandidate());
+//			
+//		}
+		System.out.println("Best product:");
+		EvaluatedCandidate<ProductSet> best = finalPopulation.get(0);
+		System.out.printf("Final Element: maxFitness:%f size:%d %s\n",best.getFitness(),best.getCandidate().getProducts().size(),best.getCandidate());
+		for(Product p : best.getCandidate().getProducts()) {
+//			System.out.println(GPLProductValidator.printProduct(p.getFeatures()));
+			System.out.println(BerkleyProductValidator.printProduct(p.getFeatures()));
 		}
+		
 	}
 }
 

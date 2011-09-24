@@ -2,6 +2,7 @@ package cheep.eval;
 
 import static org.junit.Assert.*;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -41,6 +42,11 @@ public class GPLProductValidator extends ProductValidator {
 	ENDEXCLUSIVE:
 	14: Base
  */
+	
+	public final static String[] reference = new String[] { "Benchmark", "Number",
+			"Connected", "Transpose StronglyConnected", "Cycle", "MSTPrim",
+			"MSTKruskal", "Shortest", "BFS", "DFS", "Search", "Weighted",
+			"Directed", "Undirected", "Base" };
 	
 	@Override
 	public boolean validate(Product t) {
@@ -189,24 +195,28 @@ public class GPLProductValidator extends ProductValidator {
 		assertTrue(validate(p1));
 
 		System.out.println(print01(b1));
+		System.out.println(printProduct(b1));
 		
 		boolean[] b2 = new boolean[]{true, true, false, true, false, false, false, true, false, true, true, true, true, false, true};
 		Product p2 = new Product(b2);
 		assertTrue(validate(p2));
 		
 		System.out.println(print01(b2));
+		System.out.println(printProduct(b2));
 
 		boolean[] b3 = new boolean[]{true, true, false, false, true, true, false, false, false, true, false, true, false, true, true};;
 		Product p3 = new Product(b3);
 		assertTrue(validate(p3));
 		
 		System.out.println(print01(b3));
+		System.out.println(printProduct(b3));
 
 		boolean[] b4 = new boolean[]{true, false, false, false, false, false, false, true, true, false, true, true, true, false, true};
 		Product p4 = new Product(b4);
 		assertTrue(validate(p4));
 		
 		System.out.println(print01(b4));
+		System.out.println(printProduct(b4));
 
 		
 		ProductSet pset = new ProductSet(new Product[]{p1,p2,p3,p4});
@@ -226,6 +236,19 @@ public class GPLProductValidator extends ProductValidator {
 			}
 		}
 		return sb.toString();
+	}
+	
+	public static String printProduct(boolean[] array) {
+		StringBuffer sb = new StringBuffer();
+		
+		for (int i = 0; i < array.length; i++) {
+			if(array[i]) {
+				sb.append(reference[i]);
+				sb.append(" ");
+			} 
+		}
+		return sb.toString();
+		
 	}
 	
 	

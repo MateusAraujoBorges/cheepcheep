@@ -2,6 +2,7 @@ package cheep.eval;
 
 import static org.junit.Assert.assertTrue;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -91,6 +92,19 @@ public class BerkleyProductValidator extends ProductValidator{
 %END - OPS
 41: [MEMORY_BUDGET];
 	 */
+	
+	public static final String[] reference = new String[] { "LOGGING_FINER",
+			"LOGGING_CONFIG", "LOGGING_SEVERE", "LOGGING_EVICTOR",
+			"LOGGING_CLEANER", "LOGGING_RECOVERY", "LOGGING_DBLOGHANDLER",
+			"LOGGING_CONSOLEHANDLER", "LOGGING_INFO", "LOGGING_BASE",
+			"LOGGING_FILEHANDLER", "LOGGING_FINE", "LOGGING_FINEST", "LATCHES",
+			"TRANSACTIONS", "CHECKLEAKS", "FSYNC", "CHECKSUM",
+			"SYNCHRONIZEDIO", "IO", "CHUNCKEDNIO", "NIO", "DIRECTNIO",
+			"ENVIRONMENT_LOCKING", "CP_BYTES", "CP_TIME",
+			"CHECKPOINTER_DAEMON", "DISKFULLERRO", "FILEHANDLECACHE",
+			"CLEANERDAEMON", "CLEANER", "LOOKAHEADCACHE", "STATISTICS",
+			"INCOMPRESSOR", "CRITICAL_EVICTION", "EVICTORDAEMON", "EVICTOR",
+			"VERIFIER", "DELETEOP", "RENAMEOP", "TRUNCATEOP", "MEMORY_BUDGET" };
 	
 	@Override
 	public boolean validate(Product p) {
@@ -305,6 +319,17 @@ public class BerkleyProductValidator extends ProductValidator{
 			} else {
 				sb.append(0);
 			}
+		}
+		return sb.toString();
+	}
+
+	public static String printProduct(boolean[] features) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < features.length; i++) {
+			if(features[i]) {
+				sb.append(reference[i]);
+				sb.append(" ");
+			} 
 		}
 		return sb.toString();
 	}
