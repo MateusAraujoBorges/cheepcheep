@@ -54,7 +54,7 @@ public class ProductSetValidator implements Validator<ProductSet>{
 			allFeatureArrays.add(p.getFeatures());
 			double nDistFeatures = p.getDistinctFeatures();
 			boolean isValid = productVal.validate(p);
-			double partialFitness = nDistFeatures / totalNumberFeatures;
+			double partialFitness = nDistFeatures / (totalNumberFeatures);
 			
 			if(isValid) {
 				fitness += partialFitness;
@@ -73,8 +73,8 @@ public class ProductSetValidator implements Validator<ProductSet>{
 		}
 		
 		if(fitness > 0) {
-			fitness = fitness * (allXorCombinations.size() / setSize);
 			fitness = fitness / setSize;
+			fitness = fitness * ( (double) allXorCombinations.size() / setSize);
 //			fitness += (1.0 / setSize);
 		} else {
 			fitness = 0;
