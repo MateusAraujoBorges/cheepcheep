@@ -10,6 +10,7 @@ import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 import cheep.model.Product;
+import cheep.model.ProductFactory;
 import cheep.model.ProductSet;
 
 public class ProductSetMutation implements EvolutionaryOperator<ProductSet>{
@@ -37,6 +38,7 @@ public class ProductSetMutation implements EvolutionaryOperator<ProductSet>{
 	
 	@Override
 	public List<ProductSet> apply(List<ProductSet> selectedCandidates, Random rng) {
+		
 		int nCandidates = selectedCandidates.size();
 		List<ProductSet> evolved = new ArrayList<ProductSet>(nCandidates);
 		

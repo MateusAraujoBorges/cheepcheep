@@ -183,7 +183,7 @@ public class GPLProductValidator extends ProductValidator {
 		assertTrue(validate(p6));
 		
 		ProductSet pset = new ProductSet(new Product[]{p1,p2,p3,p4,p5,p6});
-		Validator<Product> valP = new GPLProductValidator();
+		ProductValidator valP = new GPLProductValidator();
 		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9, 0.99);
 		valPset.getFitness(pset, new ArrayList<ProductSet>());
 	}
@@ -220,7 +220,7 @@ public class GPLProductValidator extends ProductValidator {
 
 		
 		ProductSet pset = new ProductSet(new Product[]{p1,p2,p3,p4});
-		Validator<Product> valP = new GPLProductValidator();
+		ProductValidator valP = new GPLProductValidator();
 		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9, 0.99);
 		assertTrue(valPset.validate(pset));
 		valPset.getFitness(pset, new ArrayList<ProductSet>());
@@ -237,6 +237,7 @@ public class GPLProductValidator extends ProductValidator {
 		}
 		return sb.toString();
 	}
+
 	
 	public static String printProduct(boolean[] array) {
 		StringBuffer sb = new StringBuffer();
@@ -251,5 +252,16 @@ public class GPLProductValidator extends ProductValidator {
 		
 	}
 	
-	
+	@Override
+	public boolean[] xorCombination(Product t) {
+		boolean[] features = t.getFeatures();
+		
+		boolean BFS = features[8];
+		boolean DFS = features[9];
+		boolean SEARCH = features[10];
+		boolean DIRECTED = features[12];
+		boolean UNDIRECTED = features[13];
+		
+		return new boolean[]{BFS,DFS,SEARCH,DIRECTED,UNDIRECTED};
+	}
 }

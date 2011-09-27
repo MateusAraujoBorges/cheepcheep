@@ -242,7 +242,7 @@ public class BerkleyProductValidator extends ProductValidator{
 	@Test
 	public void testValidatorElton() {
 		
-		Validator<Product> valP = new BerkleyProductValidator();
+		ProductValidator valP = new BerkleyProductValidator();
 		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9, 0.99);
 		
 //		LOGGING_FINER,LOGGING_CONFIG,LOGGING_SEVERE,LOGGING_EVICTOR,LOGGING_CLEANER,LOGGING_RECOVERY,LOGGING_DBLOGHANDLER,LOGGING_CONSOLEHANDLER,LOGGING_INFO,LOGGING_BASE,LOGGING_FILEHANDLER,LOGGING_FINE,LOGGING_FINEST,LATCHES,TRANSACTIONS,CHECKLEAKS,FSYNC,CHECKSUM,ENVIRONMENT_LOCKING,DISKFULLERRO,FILEHANDLECACHE,CP_BYTES,CP_TIME,CHECKPOINTER_DAEMON,CLEANERDAEMON,CLEANER,LOOKAHEADCACHE,STATISTICS,INCOMPRESSOR,VERIFIER,CRITICAL_EVICTION,EVICTORDAEMON,EVICTOR,DELETEOP,RENAMEOP,TRUNCATEOP,MEMORY_BUDGET,SYNCHRONIZEDIO,IO
@@ -279,7 +279,7 @@ public class BerkleyProductValidator extends ProductValidator{
 	@Test
 	public void testValidatorCheepCheep() {
 		
-		Validator<Product> valP = new BerkleyProductValidator();
+		ProductValidator valP = new BerkleyProductValidator();
 		Validator<ProductSet> valPset = new ProductSetValidator(valP, 0.9, 0.99);
 		
 		boolean[] b1 = new boolean[]{false, true, true, true, true, true, true, false, false, true, true, true, true, true, true, true, true, false, false, false, false, true, false, true, false, false, false, false, false, false, true, false, false, false, false, true, true, false, false, true, false, true};
@@ -332,6 +332,11 @@ public class BerkleyProductValidator extends ProductValidator{
 			} 
 		}
 		return sb.toString();
+	}
+	
+	@Override
+	public boolean[] xorCombination(Product t) {
+		return null;
 	}
 	
 }
