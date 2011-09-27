@@ -57,7 +57,7 @@ public class TestWatchmaker {
 //		a.add(new ProductSetMutation(new Probability(0.50), new Probability(0.25), new Probability(0.20), pfac));
 
 		List<EvolutionaryOperator<ProductSet>> a = new ArrayList<EvolutionaryOperator<ProductSet>>(3);
-		a.add(new ValidProductSetMutation(new Probability(1), new Probability(0.25), new Probability(0.20), pfac,valPset));
+		a.add(new ValidProductSetMutation(new Probability(1), new Probability(0.25), new Probability(0.20), pfac,valPset,false));
 
 		
 		EvolutionaryOperator<ProductSet> pipeline = new EvolutionPipeline<ProductSet>(a);
