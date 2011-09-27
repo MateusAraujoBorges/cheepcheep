@@ -336,7 +336,14 @@ public class BerkleyProductValidator extends ProductValidator{
 	
 	@Override
 	public boolean[] xorCombination(Product t) {
-		return null;
+		boolean[] f = t.getFeatures();
+		boolean SYNCHRONIZEDIO = f[18];
+		boolean IO = f[19];
+		boolean CHUNCKEDNIO = f[20];
+		boolean NIO= f[21];
+		boolean DIRECTNIO = f[22];
+		
+		return new boolean[] {SYNCHRONIZEDIO,IO,CHUNCKEDNIO,NIO,DIRECTNIO};
 	}
 	
 }
