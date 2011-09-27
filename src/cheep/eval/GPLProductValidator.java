@@ -72,7 +72,7 @@ public class GPLProductValidator extends ProductValidator {
 		
 		if(bfs || dfs || search) {//check if src feature is active
 			src = true;
-			isValid &= bfs ^ dfs;
+			isValid &= (bfs ^ dfs) && search;
 		}
 		                          
 		//11
@@ -256,12 +256,15 @@ public class GPLProductValidator extends ProductValidator {
 	public boolean[] xorCombination(Product t) {
 		boolean[] features = t.getFeatures();
 		
+//		boolean PRIM = features[5];
+//		boolean KRUSKAL = features[6];
 		boolean BFS = features[8];
 		boolean DFS = features[9];
 		boolean SEARCH = features[10];
 		boolean DIRECTED = features[12];
 		boolean UNDIRECTED = features[13];
 		
+//		return new boolean[]{PRIM,KRUSKAL,BFS,DFS,SEARCH,DIRECTED,UNDIRECTED};
 		return new boolean[]{BFS,DFS,SEARCH,DIRECTED,UNDIRECTED};
 	}
 }
